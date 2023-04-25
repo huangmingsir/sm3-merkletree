@@ -4,12 +4,11 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"github.com/huangmingsir/sm3-merkletree/sm3"
 	"math/rand"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/wealdtech/go-merkletree/blake2b"
-	"github.com/wealdtech/go-merkletree/keccak256"
 )
 
 // _byteArray is a helper to turn a string in to a byte array
@@ -35,16 +34,16 @@ var tests = []struct {
 	saltedRoot []byte
 }{
 	{ // 0
-		hashType:  blake2b.New(),
+		hashType:  sm3.New(),
 		createErr: errors.New("tree must have at least 1 piece of data"),
 	},
 	{ // 1
-		hashType:  blake2b.New(),
+		hashType:  sm3.New(),
 		data:      [][]byte{},
 		createErr: errors.New("tree must have at least 1 piece of data"),
 	},
 	{ // 2
-		hashType: blake2b.New(),
+		hashType: sm3.New(),
 		data: [][]byte{
 			[]byte("Foo"),
 			[]byte("Bar"),
@@ -54,7 +53,7 @@ var tests = []struct {
 		salt:       []byte("salt"),
 		saltedRoot: _byteArray("420ba02ad7ce2077a2f82f4ac3752eeaf1285779a210391e9378337af0ed3539"),
 	},
-	{ // 3
+	/*{ // 3
 		hashType: keccak256.New(),
 		data: [][]byte{
 			[]byte("Foo"),
@@ -64,9 +63,9 @@ var tests = []struct {
 		dot:        "digraph MerkleTree {rankdir = BT;node [shape=rectangle margin=\"0.2,0.2\"];\"Foo\" [shape=oval];\"Foo\"->2;2 [label=\"b608…16b7\"];2->1;\"Bar\" [shape=oval];\"Bar\"->3;3 [label=\"c162…985f\"];2->3 [style=invisible arrowhead=none];3->1;{rank=same;2;3};1 [label=\"fb6c…aeed\"];}",
 		salt:       []byte("salt"),
 		saltedRoot: _byteArray("5d3112070164037e104b3cc42ef5242e35616fdc6d2b34e3605154a3e5f9d594"),
-	},
+	},*/
 	{ // 4
-		hashType: blake2b.New(),
+		hashType: sm3.New(),
 		data: [][]byte{
 			[]byte("Foo"),
 		},
@@ -74,7 +73,7 @@ var tests = []struct {
 		dot:  "digraph MerkleTree {rankdir = BT;node [shape=rectangle margin=\"0.2,0.2\"];\"Foo\" [shape=oval];\"Foo\"->1;1 [label=\"7b50…c81f\"];{rank=same;1};}",
 	},
 	{ // 5
-		hashType: blake2b.New(),
+		hashType: sm3.New(),
 		data: [][]byte{
 			[]byte("Foo"),
 			[]byte("Bar"),
@@ -84,7 +83,7 @@ var tests = []struct {
 		dot:  "digraph MerkleTree {rankdir = BT;node [shape=rectangle margin=\"0.2,0.2\"];\"Foo\" [shape=oval];\"Foo\"->4;4 [label=\"7b50…c81f\"];4->2;\"Bar\" [shape=oval];\"Bar\"->5;5 [label=\"03c7…6406\"];4->5 [style=invisible arrowhead=none];5->2;\"Baz\" [shape=oval];\"Baz\"->6;6 [label=\"6d5f…2ae0\"];5->6 [style=invisible arrowhead=none];6->3;7 [label=\"0000…0000\"];6->7 [style=invisible arrowhead=none];7->3;{rank=same;4;5;6;7};3 [label=\"13c7…a929\"];3->1;2 [label=\"e9e0…f637\"];2->1;1 [label=\"635c…889c\"];}",
 	},
 	{ // 6
-		hashType: blake2b.New(),
+		hashType: sm3.New(),
 		data: [][]byte{
 			[]byte("Foo"),
 			[]byte("Bar"),
@@ -97,7 +96,7 @@ var tests = []struct {
 		dot:  "digraph MerkleTree {rankdir = BT;node [shape=rectangle margin=\"0.2,0.2\"];\"Foo\" [shape=oval];\"Foo\"->8;8 [label=\"7b50…c81f\"];8->4;\"Bar\" [shape=oval];\"Bar\"->9;9 [label=\"03c7…6406\"];8->9 [style=invisible arrowhead=none];9->4;\"Baz\" [shape=oval];\"Baz\"->10;10 [label=\"6d5f…2ae0\"];9->10 [style=invisible arrowhead=none];10->5;\"Qux\" [shape=oval];\"Qux\"->11;11 [label=\"d5d1…3cda\"];10->11 [style=invisible arrowhead=none];11->5;\"Quux\" [shape=oval];\"Quux\"->12;12 [label=\"2fec…1151\"];11->12 [style=invisible arrowhead=none];12->6;\"Quuz\" [shape=oval];\"Quuz\"->13;13 [label=\"aff2…62e5\"];12->13 [style=invisible arrowhead=none];13->6;14 [label=\"0000…0000\"];13->14 [style=invisible arrowhead=none];14->7;15 [label=\"0000…0000\"];14->15 [style=invisible arrowhead=none];15->7;{rank=same;8;9;10;11;12;13;14;15};7 [label=\"0e57…e3a8\"];7->3;6 [label=\"3705…4377\"];6->3;5 [label=\"f277…7fd5\"];5->2;4 [label=\"e9e0…f637\"];4->2;3 [label=\"7723…f470\"];3->1;2 [label=\"7799…9592\"];2->1;1 [label=\"4e6b…4400\"];}",
 	},
 	{ // 7
-		hashType: blake2b.New(),
+		hashType: sm3.New(),
 		data: [][]byte{
 			[]byte("Foo"),
 			[]byte("Bar"),

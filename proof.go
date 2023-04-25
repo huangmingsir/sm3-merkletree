@@ -3,7 +3,7 @@ package merkletree
 import (
 	"bytes"
 
-	"github.com/wealdtech/go-merkletree/blake2b"
+	"github.com/huangmingsir/sm3-merkletree/sm3"
 )
 
 // Proof is a proof of a Merkle tree
@@ -27,7 +27,7 @@ func newProof(hashes [][]byte, index uint64) *Proof {
 //
 // This returns true if the proof is verified, otherwise false.
 func VerifyProof(data []byte, proof *Proof, root []byte) (bool, error) {
-	return VerifyProofUsing(data, proof, root, blake2b.New(), nil)
+	return VerifyProofUsing(data, proof, root, sm3.New(), nil)
 }
 
 // VerifyProofUsing verifies a Merkle tree proof for a piece of data using the provided hash type.
