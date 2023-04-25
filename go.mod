@@ -1,4 +1,4 @@
-module sm3-merkletree
+module github.com/huangmingsir/sm3-merkletree
 
 go 1.17
 
